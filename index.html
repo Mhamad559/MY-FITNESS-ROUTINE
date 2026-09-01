@@ -8,10 +8,16 @@
 
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="My Fitness Routine">
+<meta name="apple-mobile-web-app-title" content="MyFitness">
 <meta name="theme-color" content="#030712">
 
 <title>My Fitness Routine PRO</title>
+
+<!-- iOS Home Screen App Icon -->
+<link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' width='512' height='512'><rect width='512' height='512' rx='115' fill='%230b0f19'/><radialGradient id='g' cx='50%' cy='20%' r='80%'><stop offset='0%' stop-color='%233b82f6' stop-opacity='0.25'/><stop offset='100%' stop-color='%230b0f19' stop-opacity='0'/></radialGradient><rect width='512' height='512' rx='115' fill='url(%23g)'/><g transform='translate(106, 106) scale(0.587)' fill='%233b82f6'><path d='M104 160c-13.3 0-24 10.7-24 24v144c0 13.3 10.7 24 24 24h16c13.3 0 24-10.7 24-24V184c0-13.3-10.7-24-24-24h-16zm-56 32c-13.3 0-24 10.7-24 24v80c0 13.3 10.7 24 24 24h16c13.3 0 24-10.7 24-24v-80c0-13.3-10.7-24-24-24H48zm360-32c-13.3 0-24 10.7-24 24v144c0 13.3 10.7 24 24 24h16c13.3 0 24-10.7 24-24V184c0-13.3-10.7-24-24-24h-16zm56 32c-13.3 0-24 10.7-24 24v80c0 13.3 10.7 24 24 24h16c13.3 0 24-10.7 24-24v-80c0-13.3-10.7-24-24-24h-16zM144 232c0-13.3 10.7-24 24-24h176c13.3 0 24 10.7 24 24v48c0 13.3-10.7 24-24 24H168c-13.3 0-24-10.7-24-24v-48z'/></g></svg>">
+
+<!-- Browser Favicon -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='115' fill='%230b0f19'/><g transform='translate(106, 106) scale(0.587)' fill='%233b82f6'><path d='M104 160c-13.3 0-24 10.7-24 24v144c0 13.3 10.7 24 24 24h16c13.3 0 24-10.7 24-24V184c0-13.3-10.7-24-24-24h-16zm-56 32c-13.3 0-24 10.7-24 24v80c0 13.3 10.7 24 24 24h16c13.3 0 24-10.7 24-24v-80c0-13.3-10.7-24-24-24H48zm360-32c-13.3 0-24 10.7-24 24v144c0 13.3 10.7 24 24 24h16c13.3 0 24-10.7 24-24V184c0-13.3-10.7-24-24-24h-16zm56 32c-13.3 0-24 10.7-24 24v80c0 13.3 10.7 24 24 24h16c13.3 0 24-10.7 24-24v-80c0-13.3-10.7-24-24-24h-16zM144 232c0-13.3 10.7-24 24-24h176c13.3 0 24 10.7 24 24v48c0 13.3-10.7 24-24 24H168c-13.3 0-24-10.7-24-24v-48z'/></g></svg>">
 
 <style>
 /* =========================================================
@@ -70,6 +76,24 @@ body{
     display:flex;
     justify-content:space-between;
     align-items:center;
+}
+
+.brand-wrapper{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.app-logo-icon{
+    width:36px;
+    height:36px;
+    background:var(--card);
+    border:1px solid rgba(59, 130, 246, 0.4);
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow: 0 0 12px var(--accent-glow);
 }
 
 .brand-title{ font-size:18px; font-weight:800; letter-spacing:-0.5px; color:#fff; }
@@ -384,9 +408,16 @@ body{
 
 <header class="header">
     <div class="header-inner">
-        <div>
-            <div class="brand-title">MY FITNESS ROUTINE</div>
-            <div class="brand-sub">HIGH PERFORMANCE TRACKER</div>
+        <div class="brand-wrapper">
+            <div class="app-logo-icon">
+                <svg width="22" height="22" viewBox="0 0 512 512" fill="#3b82f6">
+                    <path d="M104 160c-13.3 0-24 10.7-24 24v144c0 13.3 10.7 24 24 24h16c13.3 0 24-10.7 24-24V184c0-13.3-10.7-24-24-24h-16zm-56 32c-13.3 0-24 10.7-24 24v80c0 13.3 10.7 24 24 24h16c13.3 0 24-10.7 24-24v-80c0-13.3-10.7-24-24-24H48zm360-32c-13.3 0-24 10.7-24 24v144c0 13.3 10.7 24 24 24h16c13.3 0 24-10.7 24-24V184c0-13.3-10.7-24-24-24h-16zm56 32c-13.3 0-24 10.7-24 24v80c0 13.3 10.7 24 24 24h16c13.3 0 24-10.7 24-24v-80c0-13.3-10.7-24-24-24h-16zM144 232c0-13.3 10.7-24 24-24h176c13.3 0 24 10.7 24 24v48c0 13.3-10.7 24-24 24H168c-13.3 0-24-10.7-24-24v-48z"/>
+                </svg>
+            </div>
+            <div>
+                <div class="brand-title">MY FITNESS ROUTINE</div>
+                <div class="brand-sub">HIGH PERFORMANCE TRACKER</div>
+            </div>
         </div>
         <div class="header-right">
             <div class="streak-badge">
