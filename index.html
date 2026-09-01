@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<!-- Prevent page scaling -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="My Fitness Routine">
+<meta name="theme-color" content="#030712">
+
+<title>My Fitness Routine PRO</title>
+
+<style>
+/* =========================================================
+   MY FITNESS ROUTINE PRO - ELECTRIC BLUE & DARK THEME
+========================================================= */
+
+:root{
+    --bg:#030712;
+    --card:#0b0f19;
+    --card-hover:#111827;
+    --text:#f9fafb;
+    --muted:#9ca3af;
+    --accent:#3b82f6; /* Electric Blue */
+    --accent-glow:rgba(59, 130, 246, 0.35);
+    --green:#10b981;
+    --orange:#f59e0b;
+    --line:rgba(255, 255, 255, 0.08);
+    --radius:22px;
+}
+
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+    user-select: none;
+}
+
+html, body {
+    touch-action: manipulation;
+    overflow-x: hidden;
+}
+
+body{
+    margin:0;
+    min-height:100vh;
+    color:var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+    background: radial-gradient(circle at 50% -10%, rgba(59, 130, 246, 0.2), transparent 50%), var(--bg);
+    padding-bottom:50px;
+}
+
+/* HEADER */
+.header{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    padding: calc(env(safe-area-inset-top) + 14px) 24px 14px;
+    background:rgba(3, 7, 18, 0.85);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--line);
+}
+
+.header-inner{
+    max-width:1200px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.brand-title{ font-size:18px; font-weight:800; letter-spacing:-0.5px; color:#fff; }
+.brand-sub{ color:var(--accent); font-size:10px; font-weight:700; letter-spacing:1px; margin-top:2px; }
+
+.header-right{
+    display:flex;
+    gap:20px;
+    align-items:center;
+}
+
+.streak-badge{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    background:rgba(245, 158, 11, 0.12);
+    border:1px solid rgba(245, 158, 11, 0.3);
+    padding:6px 12px;
+    border-radius:12px;
+    color:var(--orange);
+    font-weight:800;
+    font-size:13px;
+}
+
+.week strong{ font-size:22px; font-weight:900; color:var(--accent); }
+.week span{ display:block; color:var(--muted); font-size:9px; letter-spacing:1px; }
+
+/* CONTAINER */
+.container{
+    width:min(1200px, calc(100% - 32px));
+    margin:auto;
+}
+
+/* HERO */
+.hero{ padding:30px 0 15px; }
+.hero h1{ margin:0; font-size:clamp(32px, 4vw, 48px); letter-spacing:-1.5px; line-height:1.1; }
+.hero h1 span{ color:var(--accent); text-shadow: 0 0 20px var(--accent-glow); }
+.hero p{ color:var(--muted); font-size:13px; margin-top:8px; }
+
+/* STATS */
+.stats{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap:12px;
+    margin:20px 0;
+}
+.stat{
+    padding:16px;
+    border:1px solid var(--line);
+    border-radius:18px;
+    background:rgba(255,255,255,.02);
+}
+.stat-value{ font-size:22px; font-weight:900; color:#fff; }
+.stat-label{ color:var(--muted); font-size:9px; letter-spacing:.5px; margin-top:4px; }
+
+/* DAY NAVIGATION */
+.day-navigation{
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    scrollbar-width:none;
+    padding-bottom:10px;
+}
+.day-navigation::-webkit-scrollbar{ display:none; }
+
+.day{
+    min-width:140px;
+    color:var(--muted);
+    background:rgba(255,255,255,.02);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:14px;
+    cursor:pointer;
+    transition:0.2s ease;
+}
+.day.active{
+    color:#fff;
+    background:rgba(59, 130, 246, 0.15);
+    border-color:var(--accent);
+    box-shadow: 0 8px 25px var(--accent-glow);
+}
+.day-number{ font-size:9px; font-weight:800; letter-spacing:1px; color:var(--accent); }
+.day.active .day-number{ color:#fff; }
+.day-name{ margin-top:4px; font-size:13px; font-weight:700; }
+
+/* SECTION HEAD */
+.section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    margin:25px 0 15px;
+}
+.section-head h2{ margin:0; font-size:22px; }
+.progress-wrap{ width:160px; }
+.progress-info{ display:flex; justify-content:space-between; color:var(--muted); font-size:9px; margin-bottom:6px; }
+.progress{ height:6px; background:#111827; border-radius:10px; overflow:hidden; }
+.progress-fill{ width:0%; height:100%; background:var(--accent); transition: width 0.4s ease; box-shadow: 0 0 10px var(--accent); }
+
+/* EXERCISE GRID */
+.exercise-grid{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap:20px;
+}
+
+/* EXERCISE CARD */
+.exercise-card{
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    background:var(--card);
+    padding:18px;
+    transition: 0.2s ease;
+}
+.exercise-card.completed{ border-color:rgba(16, 185, 129, 0.4); }
+
+.exercise-top{ display:flex; justify-content:space-between; align-items:center; }
+.exercise-name{ font-size:16px; font-weight:800; color:#fff; }
+.exercise-target{ color:var(--muted); font-size:11px; margin-top:2px; }
+
+/* PHOTO FRAME */
+.photo-frame{
+    position:relative;
+    width:100%;
+    height:220px;
+    margin:15px 0 12px;
+    border-radius:16px;
+    overflow:hidden;
+    border:1px solid var(--line);
+    background:#030712;
+}
+.photo-frame img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    filter: brightness(0.9) contrast(1.05);
+    transition: transform 0.4s ease;
+}
+.exercise-card:hover .photo-frame img{
+    transform: scale(1.03);
+}
+.photo-overlay{
+    position:absolute;
+    inset:0;
+    background: linear-gradient(180deg, transparent 60%, rgba(3,7,18,0.9));
+    display:flex;
+    align-items:flex-end;
+    padding:12px;
+}
+.photo-badge{
+    background:rgba(59, 130, 246, 0.2);
+    backdrop-filter:blur(10px);
+    padding:5px 10px;
+    border-radius:8px;
+    font-size:10px;
+    font-weight:700;
+    color:#93c5fd;
+    border:1px solid rgba(59, 130, 246, 0.3);
+}
+
+/* EXERCISE INSTRUCTION BOX */
+.execution-box {
+    background: rgba(59, 130, 246, 0.05);
+    border-left: 3px solid var(--accent);
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    direction: ltr;
+}
+.execution-title {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--accent);
+    margin-bottom: 4px;
+}
+.execution-desc {
+    font-size: 12px;
+    color: #d1d5db;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* SET TRACKER & INPUTS */
+.set-title{ color:var(--muted); font-size:10px; font-weight:700; margin-bottom:8px; letter-spacing:0.5px; }
+.sets{ display:grid; grid-template-columns: repeat(4, 1fr); gap:8px; }
+.set-box{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+}
+.set-btn{
+    height:38px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    background:#030712;
+    color:#9ca3af;
+    font-size:10px;
+    font-weight:800;
+    cursor:pointer;
+}
+.set-btn.done{ background:rgba(16, 185, 129, 0.15); color:var(--green); border-color:rgba(16, 185, 129, 0.4); }
+
+.weight-input{
+    width:100%;
+    background:#030712;
+    border:1px solid var(--line);
+    border-radius:6px;
+    color:#fff;
+    font-size:10px;
+    text-align:center;
+    padding:5px 0;
+}
+
+.complete-btn{
+    width:100%;
+    height:44px;
+    margin-top:14px;
+    border:0;
+    border-radius:12px;
+    background:#1f2937;
+    color:#e5e7eb;
+    font-size:11px;
+    font-weight:800;
+    cursor:pointer;
+    transition: 0.2s;
+}
+.complete-btn.done{ background:var(--green); color:#fff; }
+
+.workout-mode-btn{
+    width:100%;
+    height:42px;
+    margin-top:8px;
+    border:1px solid rgba(59, 130, 246, 0.3);
+    border-radius:12px;
+    background:rgba(59, 130, 246, 0.1);
+    color:#93c5fd;
+    font-size:11px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+/* MODAL */
+.modal{
+    position:fixed;
+    inset:0;
+    z-index:5000;
+    display:none;
+    background:rgba(0,0,0,.85);
+    backdrop-filter:blur(20px);
+    padding:20px;
+}
+.modal.show{ display:flex; align-items:center; justify-content:center; }
+.modal-panel{
+    width:min(500px, 100%);
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:24px;
+    padding:24px;
+}
+.modal-head{ display:flex; justify-content:space-between; align-items:center; }
+.close-btn{ background:none; border:none; color:#fff; font-size:20px; cursor:pointer; }
+
+.preset-timers{ display:flex; gap:8px; justify-content:center; margin:15px 0; }
+.preset-btn{
+    background:#111827;
+    border:1px solid var(--line);
+    color:var(--muted);
+    padding:6px 14px;
+    border-radius:8px;
+    font-size:11px;
+    font-weight:700;
+    cursor:pointer;
+}
+.preset-btn.active{ border-color:var(--accent); color:#fff; background:rgba(59, 130, 246, 0.2); }
+
+.timer-display{ text-align:center; font-size:48px; font-weight:900; margin:10px 0; letter-spacing:-1px; color:#fff; }
+
+/* TOAST */
+.toast{
+    position:fixed;
+    left:50%;
+    bottom:20px;
+    transform:translate(-50%, 100px);
+    background:#1f2937;
+    border:1px solid var(--line);
+    color:#fff;
+    padding:10px 20px;
+    border-radius:12px;
+    font-size:12px;
+    transition:0.3s ease;
+    z-index:9999;
+}
+.toast.show{ transform:translate(-50%, 0); }
+
+/* REST CARD */
+.rest-card{
+    grid-column:1/-1;
+    padding:60px 20px;
+    text-align:center;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    background:var(--card);
+}
+
+@media(max-width:800px){
+    .exercise-grid{ grid-template-columns:1fr; }
+    .stats{ grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="header-inner">
+        <div>
+            <div class="brand-title">MY FITNESS ROUTINE</div>
+            <div class="brand-sub">HIGH PERFORMANCE TRACKER</div>
+        </div>
+        <div class="header-right">
+            <div class="streak-badge">
+                🔥 <span id="streakCount">0</span> DAYS
+            </div>
+            <div class="week">
+                <strong id="weekPercent">0%</strong>
+                <span>PROGRESS</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="container">
+    <section class="hero">
+        <h1>Focus & <span>Execute</span></h1>
+        <p>Track your sets, weights, and daily progress with precision.</p>
+    </section>
+
+    <section class="stats">
+        <div class="stat">
+            <div class="stat-value" id="completedCount">0</div>
+            <div class="stat-label">EXERCISES</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value" id="setCount">0</div>
+            <div class="stat-label">SETS COMPLETED</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value" id="totalStreak">0</div>
+            <div class="stat-label">STREAK DAYS</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">7</div>
+            <div class="stat-label">DAYS PROGRAM</div>
+        </div>
+    </section>
+
+    <nav class="day-navigation">
+        <button class="day active" onclick="selectDay(1)">
+            <div class="day-number">DAY 01</div>
+            <div class="day-name">Chest & Arms</div>
+        </button>
+        <button class="day" onclick="selectDay(2)">
+            <div class="day-number">DAY 02</div>
+            <div class="day-name">Back & Shoulders</div>
+        </button>
+        <button class="day" onclick="selectDay(3)">
+            <div class="day-number">DAY 03</div>
+            <div class="day-name">Recovery</div>
+        </button>
+        <button class="day" onclick="selectDay(4)">
+            <div class="day-number">DAY 04</div>
+            <div class="day-name">Legs & Abs</div>
+        </button>
+        <button class="day" onclick="selectDay(5)">
+            <div class="day-number">DAY 05</div>
+            <div class="day-name">Cardio & Boxing</div>
+        </button>
+        <button class="day" onclick="selectDay(6)">
+            <div class="day-number">DAY 06</div>
+            <div class="day-name">Running</div>
+        </button>
+        <button class="day" onclick="selectDay(7)">
+            <div class="day-number">DAY 07</div>
+            <div class="day-name">Running</div>
+        </button>
+    </nav>
+
+    <section class="section-head">
+        <div>
+            <h2 id="dayTitle">Chest & Arms</h2>
+        </div>
+        <div class="progress-wrap">
+            <div class="progress-info">
+                <span>DAILY SCORE</span>
+                <span id="dayPercent">0%</span>
+            </div>
+            <div class="progress">
+                <div class="progress-fill" id="dayFill"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="exerciseGrid" class="exercise-grid"></section>
+</main>
+
+<div id="workoutModal" class="modal">
+    <div class="modal-panel">
+        <div class="modal-head">
+            <h3 id="modalTitle" style="margin:0; color:#fff;">Rest Timer</h3>
+            <button class="close-btn" onclick="closeWorkout()">✕</button>
+        </div>
+
+        <div class="preset-timers">
+            <button class="preset-btn active" onclick="setTimerPreset(30, this)">30s</button>
+            <button class="preset-btn" onclick="setTimerPreset(60, this)">60s</button>
+            <button class="preset-btn" onclick="setTimerPreset(90, this)">90s</button>
+        </div>
+
+        <div class="timer-display" id="timerNumber">00:30</div>
+
+        <button class="workout-mode-btn" style="height:48px;" onclick="toggleTimer()" id="timerBtn">START TIMER</button>
+    </div>
+</div>
+
+<div id="toast" class="toast">Updated</div>
+
+<script>
+const workouts = {
+1:{
+    title:"Chest & Arms",
+    exercises:[
+        { 
+            name:"Push-ups", 
+            target:"10-15 reps (3-4 sets)", 
+            sets:4, 
+            image:"https://images.unsplash.com/photo-1598971639058-fab3c3109a00?auto=format&fit=crop&w=800&q=80",
+            howTo: "Place your hands shoulder-width apart, keep your body straight, lower down until your chest nearly touches the floor, and explode back up." 
+        },
+        { 
+            name:"Dumbbell Floor Press", 
+            target:"10-12 reps (3-4 sets)", 
+            sets:4, 
+            image:"https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=800&q=80",
+            howTo: "Lie flat on the floor, bend your elbows until they touch the ground, then press the dumbbells straight up." 
+        },
+        { 
+            name:"Dumbbell Biceps Curls", 
+            target:"12 reps (3-4 sets)", 
+            sets:4, 
+            image:"https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=800&q=80",
+            howTo: "Stand straight with arms at your sides. Curl the dumbbells upward towards your shoulders without moving your elbows." 
+        },
+        { 
+            name:"Chair Dips", 
+            target:"12 reps (3-4 sets)", 
+            sets:4, 
+            image:"https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=800&q=80",
+            howTo: "Place your hands on the edge of a sturdy chair, extend your legs, lower your body until elbows bend to 90 degrees, and push back up." 
+        }
+    ]
+},
+2:{
+    title:"Back & Shoulders",
+    exercises:[
+        { 
+            name:"Pull-ups", 
+            target:"To failure / Max reps (3-4 sets)", 
+            sets:4, 
+            image:"https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?auto=format&fit=crop&w=800&q=80",
+            howTo: "Hang from the bar, pull your chest up towards the bar using your back muscles until your chin clears the bar." 
+        },
+        { 
+            name:"Dumbbell Rows", 
+            target:"10-12 reps (3-4 sets)", 
+            sets:4, 
+            image:"https://images.unsplash.com/photo-1605296867304-46d5465a13f1?auto=format&fit=crop&w=800&q=80",
+            howTo: "Hinge at the waist with a flat back, pull the dumbbell up toward your hip, squeezing your shoulder blade at the top." 
+        },
+        { 
+            name:"Dumbbell Shoulder Press", 
+            target:"10-12 reps (3-4 sets)", 
+            sets:4, 
+            image:"https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?auto=format&fit=crop&w=800&q=80",
+            howTo: "Hold dumbbells at shoulder height and press them straight overhead without locking out your elbows." 
+        },
+        { 
+            name:"Lateral Raises", 
+            target:"12-15 reps (3-4 sets)", 
+            sets:4, 
+            image:"https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=800&q=80",
+            howTo: "Stand tall, keep a slight bend in your elbows, and raise the weights out to the sides until parallel with shoulder level." 
+        }
+    ]
+},
+3:{ title:"Recovery Day", rest:true },
+4:{
+    title:"Legs & Abs",
+    exercises:[
+        { 
+            name:"Bodyweight Squats", 
+            target:"15-20 reps (3-4 sets)", 
+            sets:4, 
+            image:"https://images.unsplash.com/photo-1574680096145-d05b474e2155?auto=format&fit=crop&w=800&q=80",
+            howTo: "Stand shoulder-width apart, sit back like sitting into an imaginary chair, keeping your knees tracking inline with your toes." 
+        },
+        { 
+            name:"Dumbbell Lunges", 
+            target:"10 reps per leg (3-4 sets)", 
+            sets:4, 
+            image:"https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80",
+            howTo: "Step forward with one leg, lowering your hips until both knees are bent at 90-degree angles, then drive back to starting position." 
+        },
+        { 
+            name:"Plank", 
+            target:"30-60 seconds (3-4 sets)", 
+            sets:4, 
+            image:"https://images.unsplash.com/photo-1566241142559-40e1dab266c6?auto=format&fit=crop&w=800&q=80",
+            howTo: "Hold a rigid bridge position on your forearms and toes, keeping a straight line from head to heels." 
+        },
+        { 
+            name:"Leg Raises", 
+            target:"12-15 reps (3-4 sets)", 
+            sets:4, 
+            image:"https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80",
+            howTo: "Lie flat on your back, place hands under your hips, and raise legs up to 90 degrees without bending knees." 
+        }
+    ]
+},
+5:{
+    title:"Cardio & Boxing",
+    exercises:[
+        { 
+            name:"Jump Rope", 
+            target:"10-15 minutes (3-4 rounds)", 
+            sets:4, 
+            image:"https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80",
+            howTo: "Jump steadily on the balls of your feet, keeping your elbows tucked in close to your torso." 
+        },
+        { 
+            name:"Punching Bag Training", 
+            target:"15-20 minutes", 
+            sets:3, 
+            image:"https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=800&q=80",
+            howTo: "Maintain a proper stance while executing controlled jabs, crosses, and hooks on the heavy bag." 
+        }
+    ]
+},
+6:{
+    title:"Running",
+    isCardio: true,
+    exercises:[
+        { 
+            name:"Outdoor / Treadmill Running", 
+            target:"20-30 minutes steady jog", 
+            image:"https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=800&q=80",
+            howTo: "Maintain a steady, moderate pace and control your breathing evenly." 
+        }
+    ]
+},
+7:{
+    title:"Running",
+    isCardio: true,
+    exercises:[
+        { 
+            name:"Interval / Endurance Running", 
+            target:"25-35 minutes running", 
+            image:"https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=800&q=80",
+            howTo: "Perform steady running or interval training (e.g., 5 min fast run + 2 min recovery walk)." 
+        }
+    ]
+}
+};
+
+let currentDay = 1;
+let progress = JSON.parse(localStorage.getItem("fitnessPRO_v4")) || {};
+let streakData = JSON.parse(localStorage.getItem("fitnessPRO_streak")) || { streak: 0, lastDate: null };
+let timerSeconds = 30;
+let timerInterval = null;
+
+document.addEventListener('gesturestart', function (e) { e.preventDefault(); });
+document.addEventListener('dblclick', function (e) { e.preventDefault(); }, { passive: false });
+
+function checkAndUpdateStreak() {
+    const today = new Date().toISOString().split('T')[0];
+    
+    if (streakData.lastDate) {
+        const last = new Date(streakData.lastDate);
+        const curr = new Date(today);
+        const diffDays = Math.round((curr - last) / (1000 * 60 * 60 * 24));
+
+        if (diffDays > 1) {
+            streakData.streak = 0;
+        }
+    }
+    
+    document.getElementById("streakCount").textContent = streakData.streak;
+    document.getElementById("totalStreak").textContent = streakData.streak;
+    localStorage.setItem("fitnessPRO_streak", JSON.stringify(streakData));
+}
+
+function ensureState(day, index) {
+    const key = `${day}-${index}`;
+    if (!progress[key]) {
+        const setsCount = workouts[day].exercises[index].sets || 1;
+        progress[key] = {
+            sets: Array(setsCount).fill(false),
+            weights: Array(setsCount).fill(''),
+            complete: false
+        };
+    }
+    return progress[key];
+}
+
+function renderDay(day) {
+    currentDay = day;
+    const data = workouts[day];
+    document.getElementById("dayTitle").textContent = data.title;
+    const grid = document.getElementById("exerciseGrid");
+    grid.innerHTML = "";
+
+    if (data.rest) {
+        grid.innerHTML = `<div class="rest-card"><h2 style="color:#fff;">Recovery Day</h2><p style="color:var(--muted);">Rest and allow your muscles to recover and rebuild for optimal performance.</p></div>`;
+        document.getElementById("dayPercent").textContent = "REST";
+        document.getElementById("dayFill").style.width = "100%";
+        return;
+    }
+
+    data.exercises.forEach((ex, idx) => {
+        const state = ensureState(day, idx);
+        let setsHTML = "";
+
+        if (!data.isCardio) {
+            for (let i = 0; i < ex.sets; i++) {
+                setsHTML += `
+                    <div class="set-box">
+                        <button class="set-btn ${state.sets[i] ? 'done' : ''}" onclick="toggleSet(${day}, ${idx}, ${i})">
+                            ${state.sets[i] ? '✓' : 'SET ' + (i + 1)}
+                        </button>
+                        <input type="text" class="weight-input" placeholder="kg" value="${state.weights[i] || ''}" onchange="updateWeight(${day}, ${idx}, ${i}, this.value)">
+                    </div>
+                `;
+            }
+        }
+
+        const card = document.createElement("article");
+        card.className = `exercise-card ${state.complete ? 'completed' : ''}`;
+        card.innerHTML = `
+            <div class="exercise-top">
+                <div>
+                    <div class="exercise-name">${ex.name}</div>
+                    <div class="exercise-target">${ex.target}</div>
+                </div>
+            </div>
+
+            <div class="photo-frame">
+                <img src="${ex.image}" alt="${ex.name}" loading="lazy">
+                <div class="photo-overlay">
+                    <div class="photo-badge">PRO FORM VIEW</div>
+                </div>
+            </div>
+
+            <div class="execution-box">
+                <div class="execution-title">Execution Guide:</div>
+                <p class="execution-desc">${ex.howTo}</p>
+            </div>
+
+            ${!data.isCardio ? `
+                <div class="set-title">TRACK SETS & WEIGHTS</div>
+                <div class="sets">${setsHTML}</div>
+            ` : ''}
+
+            <button class="complete-btn ${state.complete ? 'done' : ''}" onclick="toggleComplete(${day}, ${idx})">
+                ${state.complete ? '✓ COMPLETED' : 'MARK COMPLETED'}
+            </button>
+
+            ${!data.isCardio ? `<button class="workout-mode-btn" onclick="openWorkout()">REST TIMER</button>` : ''}
+        `;
+        grid.appendChild(card);
+    });
+
+    save();
+    updateProgress();
+}
+
+function toggleSet(day, idx, setIdx) {
+    const state = ensureState(day, idx);
+    state.sets[setIdx] = !state.sets[setIdx];
+    save();
+    renderDay(day);
+}
+
+function updateWeight(day, idx, setIdx, val) {
+    const state = ensureState(day, idx);
+    state.weights[setIdx] = val;
+    save();
+}
+
+function toggleComplete(day, idx) {
+    const state = ensureState(day, idx);
+    state.complete = !state.complete;
+    
+    const today = new Date().toISOString().split('T')[0];
+    if (streakData.lastDate !== today) {
+        streakData.streak += 1;
+        streakData.lastDate = today;
+        localStorage.setItem("fitnessPRO_streak", JSON.stringify(streakData));
+        checkAndUpdateStreak();
+    }
+
+    save();
+    renderDay(day);
+}
+
+function selectDay(day) {
+    document.querySelectorAll(".day").forEach((btn, i) => btn.classList.toggle("active", i + 1 === day));
+    renderDay(day);
+}
+
+function updateProgress() {
+    let totalEx = 0, compEx = 0, compSets = 0;
+    Object.keys(workouts).forEach(d => {
+        if (workouts[d].rest) return;
+        workouts[d].exercises.forEach((ex, idx) => {
+            totalEx++;
+            const state = progress[`${d}-${idx}`];
+            if (state) {
+                if (state.complete) compEx++;
+                compSets += state.sets.filter(Boolean).length;
+            }
+        });
+    });
+
+    const percent = totalEx ? Math.round((compEx / totalEx) * 100) : 0;
+    document.getElementById("weekPercent").textContent = percent + "%";
+    document.getElementById("completedCount").textContent = compEx;
+    document.getElementById("setCount").textContent = compSets;
+
+    if (!workouts[currentDay].rest) {
+        let dayDone = 0;
+        workouts[currentDay].exercises.forEach((ex, idx) => {
+            if (progress[`${currentDay}-${idx}`]?.complete) dayDone++;
+        });
+        const dPercent = Math.round((dayDone / workouts[currentDay].exercises.length) * 100);
+        document.getElementById("dayPercent").textContent = dPercent + "%";
+        document.getElementById("dayFill").style.width = dPercent + "%";
+    }
+}
+
+function save() {
+    localStorage.setItem("fitnessPRO_v4", JSON.stringify(progress));
+}
+
+function openWorkout() {
+    document.getElementById("workoutModal").classList.add("show");
+}
+function closeWorkout() {
+    document.getElementById("workoutModal").classList.remove("show");
+    clearInterval(timerInterval);
+    timerInterval = null;
+    document.getElementById("timerBtn").textContent = "START TIMER";
+}
+function setTimerPreset(sec, btn) {
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    timerSeconds = sec;
+    updateTimerDisplay();
+}
+function updateTimerDisplay() {
+    const m = Math.floor(timerSeconds / 60).toString().padStart(2, '0');
+    const s = (timerSeconds % 60).toString().padStart(2, '0');
+    document.getElementById("timerNumber").textContent = `${m}:${s}`;
+}
+function toggleTimer() {
+    if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        document.getElementById("timerBtn").textContent = "START TIMER";
+    } else {
+        document.getElementById("timerBtn").textContent = "PAUSE";
+        timerInterval = setInterval(() => {
+            timerSeconds--;
+            updateTimerDisplay();
+            if (timerSeconds <= 0) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                showToast("Rest time complete!");
+                document.getElementById("timerBtn").textContent = "START TIMER";
+            }
+        }, 1000);
+    }
+}
+
+function showToast(msg) {
+    const toast = document.getElementById("toast");
+    toast.textContent = msg;
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 2000);
+}
+
+checkAndUpdateStreak();
+renderDay(1);
+</script>
+</body>
+</html>
