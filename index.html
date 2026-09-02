@@ -116,6 +116,11 @@ body{
     color:var(--orange);
     font-weight:800;
     font-size:13px;
+    cursor:pointer;
+    transition: 0.2s;
+}
+.streak-badge:active {
+    transform: scale(0.95);
 }
 
 .week strong{ font-size:22px; font-weight:900; color:var(--accent); }
@@ -304,6 +309,7 @@ body{
     font-size:10px;
     text-align:center;
     padding:5px 0;
+    user-select: text; /* Enable typing */
 }
 
 .complete-btn{
@@ -420,7 +426,7 @@ body{
             </div>
         </div>
         <div class="header-right">
-            <div class="streak-badge">
+            <div class="streak-badge" onclick="editStreakManually()" title="Click to change streak manually">
                 🔥 <span id="streakCount">0</span> DAYS
             </div>
             <div class="week">
@@ -683,21 +689,21 @@ document.addEventListener('gesturestart', function (e) { e.preventDefault(); });
 document.addEventListener('dblclick', function (e) { e.preventDefault(); }, { passive: false });
 
 function checkAndUpdateStreak() {
-    const today = new Date().toISOString().split('T')[0];
-    
-    if (streakData.lastDate) {
-        const last = new Date(streakData.lastDate);
-        const curr = new Date(today);
-        const diffDays = Math.round((curr - last) / (1000 * 60 * 60 * 24));
-
-        if (diffDays > 1) {
-            streakData.streak = 0;
-        }
-    }
-    
     document.getElementById("streakCount").textContent = streakData.streak;
     document.getElementById("totalStreak").textContent = streakData.streak;
     localStorage.setItem("fitnessPRO_streak", JSON.stringify(streakData));
+}
+
+// Allow manual editing of the streak by clicking on the streak badge
+function editStreakManually() {
+    const newStreak = prompt("Enter your desired streak count:", streakData.streak);
+    if (newStreak !== null && !isNaN(newStreak)) {
+        streakData.streak = parseInt(newStreak, 10);
+        streakData.lastDate = new Date().toISOString().split('T')[0];
+        localStorage.setItem("fitnessPRO_streak", JSON.stringify(streakData));
+        checkAndUpdateStreak();
+        showToast("Streak updated successfully!");
+    }
 }
 
 function ensureState(day, index) {
@@ -800,15 +806,6 @@ function updateWeight(day, idx, setIdx, val) {
 function toggleComplete(day, idx) {
     const state = ensureState(day, idx);
     state.complete = !state.complete;
-    
-    const today = new Date().toISOString().split('T')[0];
-    if (streakData.lastDate !== today) {
-        streakData.streak += 1;
-        streakData.lastDate = today;
-        localStorage.setItem("fitnessPRO_streak", JSON.stringify(streakData));
-        checkAndUpdateStreak();
-    }
-
     save();
     renderDay(day);
 }
